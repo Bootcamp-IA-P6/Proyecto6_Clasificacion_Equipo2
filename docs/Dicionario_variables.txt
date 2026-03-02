@@ -1,0 +1,19 @@
+Age:ﾠEdad
+Job:ﾠOcupación (categorias: 'administrador', 'obrero', 'emprendedor', 'empleado doméstico', 'gerente', 'jubilado', 'autónomo', 'servicios', 'estudiante', 'técnico', 'desempleado', 'desconocido')
+Marital: Estado civilﾠ(categorias: 'divorciado', 'casado', 'soltero', 'desconocido'; nota: 'divorciado' significa divorciado o viudo)
+Education: Nivel educativoﾠ(categorias: 'básico 4 años', 'básico 6 años', 'básico 9 años', 'bachillerato', 'analfabeto', 'curso profesional', 'título universitario', 'desconocido')
+Default: ¿Tiene crédito en mora?
+Balance: Saldo medio anualﾠeuros
+Housing: Vivienda ¿Tiene préstamo hipotecario?
+Loan: préstamoﾠ¿Tiene un préstamo personal?
+Contact: Tipo de comunicación de contacto (categorias: 'celular', 'teléfono')
+Day of week: Último día de contacto de la semana
+Month: Último mes de contacto del año (categorias: 'ene', 'feb', 'mar', ..., 'nov', 'dic')
+Duration: Duración del último contacto, en segundos (numérico). Nota importante: Este atributo afecta considerablemente el resultado objetivo (p. ej., si duración = 0, entonces y = 'no').
+            Sin embargo, la duración no se conoce antes de realizar una llamada. Además, después de finalizar la llamada, y se conoce obviamente. Por lo tanto, esta entrada solo debe incluirse
+            para fines de referencia y debe descartarse si se pretende obtener un modelo predictivo realista.
+Campaign: Número de contactos realizados durante esta campaña y para este cliente (numérico, incluye el último contacto)
+pdays:ﾠNúmero de días transcurridos desde la última vez que se contactó al cliente de una campaña anterior (numérico; -1 significa que el cliente no fue contactado previamente)
+previous:ﾠNúmero de contactos realizados antes de esta campaña y para este cliente
+pOutcome: Resultado de la campaña de marketing anterior (categorias: 'fracaso', 'inexistente', 'éxito')
+y: ¿El cliente ha suscrito un depósito a plazo?
