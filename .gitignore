@@ -182,4 +182,8 @@ pyrightconfig.json
 pyvenv.cfg
 pip-selfcheck.json
 
-# End of https://www.toptal.com/developers/gitignore/api/python,venv
+# Modelos pesados
+models/**/*.pkl
+
+# opcional: permitir solo archivos ligeros concretos
+# !models/logistic_regression/logistic_regression_model.pkl
