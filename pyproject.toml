@@ -17,6 +17,7 @@ dependencies = [
     "xgboost>=3.2.0",
     "pyarrow==14.0.2",
     "altair>=4,<6",
+    "pytest>=9.0.2",
 ]
 
 [dependency-groups]
