@@ -137,13 +137,13 @@ model, threshold, feature_names, preprocessor = load_artifacts()
 # =====================================
 # Funciones auxiliares
 # =====================================
-def classify_risk(probability: float):
-    if probability < 0.20:
-        return "Riesgo bajo", "risk-low"
-    elif probability < threshold:
-        return "Riesgo medio", "risk-medium"
+def classify_probability(prob):
+    if prob >= 0.7:
+        return "Alta probabilidad de aceptación", "risk-high"
+    elif prob >= 0.4:
+        return "Probabilidad media de aceptación", "risk-medium"
     else:
-        return "Riesgo alto", "risk-high"
+        return "Baja probabilidad de aceptación", "risk-low"
 
 def build_input_df(
     age, job, marital, education, default, balance,
@@ -289,46 +289,102 @@ left_col, right_col = st.columns([1.35, 1], gap="large")
 with left_col:
     st.subheader("📋 Datos del cliente")
 
+    job_map = {
+    "Administrativo": "admin.",
+    "Obrero": "blue-collar",
+    "Emprendedor": "entrepreneur",
+    "Empleado doméstico": "housemaid",
+    "Gerencia / directivo": "management",
+    "Jubilado": "retired",
+    "Autónomo": "self-employed",
+    "Servicios": "services",
+    "Estudiante": "student",
+    "Técnico": "technician",
+    "Desempleado": "unemployed",
+    "Desconocido": "unknown"
+    }
+    job_inverse_map = {v: k for k, v in job_map.items()}
+
+    marital_map = {
+    "Divorciado": "divorced",
+    "Casado": "married",
+    "Soltero": "single"
+    }
+    marital_inverse_map = {v: k for k, v in marital_map.items()}
+    
+    education_map = {
+    "Primaria": "primary",
+    "Secundaria": "secondary",
+    "Universitaria": "tertiary",
+    "Desconocido": "unknown"
+    }
+    education_inverse_map = {v: k for k, v in education_map.items()}
+
+    yes_no_map = {
+    "No": "no",
+    "Sí": "yes"
+    }
+
+    yes_no_inverse_map = {v: k for k, v in yes_no_map.items()}
+
     with st.form("prediction_form"):
         form_col1, form_col2 = st.columns(2)
 
         with form_col1:
             age = st.slider("Edad", 18, 95, st.session_state.form_values["age"])
-            balance = st.number_input("Balance de la cuenta", value=st.session_state.form_values["balance"], step=100)
+            balance = st.number_input("Saldo de la cuenta", value=st.session_state.form_values["balance"], step=100)
             day = st.slider("Día del mes", 1, 31, st.session_state.form_values["day"])
-            campaign = st.slider("Número de contactos en esta campaña", 1, 20, st.session_state.form_values["campaign"])
+            campaign = st.slider("Veces que fue contactado en esta campaña", 1, 20, st.session_state.form_values["campaign"])
 
-            job = st.selectbox(
-                "Trabajo",
-                [
-                    "admin.", "blue-collar", "entrepreneur", "housemaid",
-                    "management", "retired", "self-employed", "services",
-                    "student", "technician", "unemployed", "unknown"
-                ],
-                index=[
-                    "admin.", "blue-collar", "entrepreneur", "housemaid",
-                    "management", "retired", "self-employed", "services",
-                    "student", "technician", "unemployed", "unknown"
-                ].index(st.session_state.form_values["job"])
+            job_label = st.selectbox(
+                "Profesión",
+                list(job_map.keys())
             )
 
-            marital = st.selectbox(
+
+            marital_label = st.selectbox(
                 "Estado civil",
-                ["divorced", "married", "single"],
-                index=["divorced", "married", "single"].index(st.session_state.form_values["marital"])
+                options=list(marital_map.keys()),
+                index=list(marital_map.keys()).index(
+                marital_inverse_map[st.session_state.form_values["marital"]]
+                )
             )
 
-            education = st.selectbox(
+            education_label = st.selectbox(
                 "Nivel educativo",
-                ["primary", "secondary", "tertiary", "unknown"],
-                index=["primary", "secondary", "tertiary", "unknown"].index(st.session_state.form_values["education"])
+                options=list(education_map.keys()),
+                index=list(education_map.keys()).index(
+                education_inverse_map[st.session_state.form_values["education"]]
+                )
             )
 
         with form_col2:
-            default = st.selectbox("¿Tiene crédito en default?", ["no", "yes"], index=["no", "yes"].index(st.session_state.form_values["default"]))
-            housing = st.selectbox("¿Tiene préstamo hipotecario?", ["no", "yes"], index=["no", "yes"].index(st.session_state.form_values["housing"]))
-            loan = st.selectbox("¿Tiene préstamo personal?", ["no", "yes"], index=["no", "yes"].index(st.session_state.form_values["loan"]))
-            contact = st.selectbox("Tipo de contacto", ["cellular", "telephone", "unknown"], index=["cellular", "telephone", "unknown"].index(st.session_state.form_values["contact"]))
+            default_label = st.selectbox(
+                "¿Ha dejado de pagar algún crédito?",
+                options=list(yes_no_map.keys()),
+                index=list(yes_no_map.keys()).index(
+                yes_no_inverse_map[st.session_state.form_values["default"]]
+                )
+            )
+
+            housing_label = st.selectbox(
+                "¿Tiene préstamo hipotecario?",
+                options=list(yes_no_map.keys()),
+                index=list(yes_no_map.keys()).index(
+                yes_no_inverse_map[st.session_state.form_values["housing"]]
+                )
+            )
+
+            loan_label = st.selectbox(
+                "¿Tiene préstamo personal?",
+                options=list(yes_no_map.keys()),
+                index=list(yes_no_map.keys()).index(
+                yes_no_inverse_map[st.session_state.form_values["loan"]]
+                )
+            )
+
+            contact = "cellular"
+
             month = st.selectbox(
                 "Mes del contacto",
                 ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"],
@@ -356,6 +412,12 @@ with right_col:
     st.markdown('<div class="small-muted">Completa el formulario y pulsa <b>Predecir</b> para ver el resultado.</div>', unsafe_allow_html=True)
 
     if submitted:
+        default = yes_no_map[default_label]
+        housing = yes_no_map[housing_label]
+        loan = yes_no_map[loan_label]
+        job = job_map[job_label]
+        marital = marital_map[marital_label]
+        education = education_map[education_label]
         es_cliente_nuevo = 1 if es_cliente_nuevo_label == "Sí" else 0
         tuvo_contacto_previo = 1 if tuvo_contacto_previo_label == "Sí" else 0
         poutcome = poutcome_map[poutcome_label]
@@ -368,7 +430,7 @@ with right_col:
 
         try:
             prediction, probability = predict_client(input_data)
-            risk_text, risk_class = classify_risk(probability)
+            risk_text, risk_class = classify_probability(probability)
 
             if prediction == 1:
                 st.success("✅ El cliente probablemente aceptará el depósito.")
@@ -408,17 +470,17 @@ with right_col:
             with st.expander("Ver resumen de la solicitud"):
                 resumen = pd.DataFrame({
                     "Campo": [
-                        "Edad", "Balance", "Día del mes", "Contactos campaña",
-                        "Trabajo", "Estado civil", "Nivel educativo",
-                        "Crédito en default", "Préstamo hipotecario", "Préstamo personal",
-                        "Tipo de contacto", "Mes", "Resultado campaña anterior",
-                        "Cliente nuevo", "Tuvo contacto previo"
+                        "Edad", "Saldo de la cuenta", "Día del mes", "Veces contactado en campaña",
+                        "Profesión", "Estado civil", "Nivel educativo",
+                        "¿Ha dejado de pagar algún crédito?", "¿Tiene préstamo hipotecario?", "¿Tiene préstamo personal?",
+                        "Medio de contacto", "Mes", "Resultado de campaña anterior",
+                        "¿Es cliente nuevo?", "¿Tuvo contacto previo?"
                     ],
                     "Valor": [
                         age, balance, day, campaign,
-                        job, marital, education,
-                        default, housing, loan,
-                        contact, month, poutcome_label,
+                        job_label, marital_label, education_label,
+                        default_label, housing_label, loan_label,
+                        "Celular", month, poutcome_label,
                         es_cliente_nuevo_label, tuvo_contacto_previo_label
                     ]
                 })
