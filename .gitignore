@@ -182,8 +182,8 @@ pyrightconfig.json
 pyvenv.cfg
 pip-selfcheck.json
 
-# Modelos pesados
 models/**/*.pkl
+!models/xgboost/xgb_best_model.pkl
 
 # opcional: permitir solo archivos ligeros concretos
 # !models/logistic_regression/logistic_regression_model.pkl
