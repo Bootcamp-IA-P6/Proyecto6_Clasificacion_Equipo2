@@ -145,15 +145,17 @@ def classify_probability(prob):
     else:
         return "Baja probabilidad de aceptación", "risk-low"
 
+MESES_ALTA_CONVERSION = ["mar", "sep", "oct", "dec"]
+
 def build_input_df(
     age, job, marital, education, default, balance,
     housing, loan, contact, day, month, campaign,
     poutcome, es_cliente_nuevo, tuvo_contacto_previo
 ):
-    alta_conversion = ["mar", "sep", "oct", "dec"]
-    temporada_alta = 1 if month in alta_conversion else 0
 
-    return pd.DataFrame({
+    temporada_alta = 1 if month in MESES_ALTA_CONVERSION else 0
+
+    df = pd.DataFrame({
         "age": [age],
         "job": [job],
         "marital": [marital],
@@ -172,13 +174,23 @@ def build_input_df(
         "temporada_alta": [temporada_alta]
     })
 
+    return df
+
+
 def predict_client(input_data: pd.DataFrame):
+
     input_processed = preprocessor.transform(input_data)
-    input_processed_df = pd.DataFrame(input_processed, columns=feature_names)
+
+    input_processed_df = pd.DataFrame(
+        input_processed,
+        columns=feature_names
+    )
+
     input_processed_df = input_processed_df[feature_names]
 
     probability = model.predict_proba(input_processed_df)[0][1]
-    prediction = 1 if probability >= threshold else 0
+    prediction = int(probability >= threshold)
+
     return prediction, probability
 
 # =====================================
@@ -327,6 +339,23 @@ with left_col:
 
     yes_no_inverse_map = {v: k for k, v in yes_no_map.items()}
 
+    month_map = {
+    "Enero": "jan",
+    "Febrero": "feb",
+    "Marzo": "mar",
+    "Abril": "apr",
+    "Mayo": "may",
+    "Junio": "jun",
+    "Julio": "jul",
+    "Agosto": "aug",
+    "Septiembre": "sep",
+    "Octubre": "oct",
+    "Noviembre": "nov",
+    "Diciembre": "dec"
+    }
+
+    month_inverse_map = {v: k for k, v in month_map.items()}
+
     with st.form("prediction_form"):
         form_col1, form_col2 = st.columns(2)
 
@@ -385,10 +414,12 @@ with left_col:
 
             contact = "cellular"
 
-            month = st.selectbox(
+            month_label = st.selectbox(
                 "Mes del contacto",
-                ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"],
-                index=["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"].index(st.session_state.form_values["month"])
+                options=list(month_map.keys()),
+                index=list(month_map.keys()).index(
+                month_inverse_map[st.session_state.form_values["month"]]
+                ) 
             )
 
             poutcome_label = st.selectbox(
@@ -418,6 +449,7 @@ with right_col:
         job = job_map[job_label]
         marital = marital_map[marital_label]
         education = education_map[education_label]
+        month = month_map[month_label]
         es_cliente_nuevo = 1 if es_cliente_nuevo_label == "Sí" else 0
         tuvo_contacto_previo = 1 if tuvo_contacto_previo_label == "Sí" else 0
         poutcome = poutcome_map[poutcome_label]
