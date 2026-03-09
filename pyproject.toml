@@ -1,17 +1,23 @@
 [project]
 name = "proyecto6-clasificacion-equipo2"
 version = "0.1.0"
-description = "Add your description here"
+description = "Proyecto de clasificación bancaria con Streamlit"
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.12,<3.13"
 dependencies = [
     "imbalanced-learn>=0.14.1",
     "jinja2>=3.1.6",
     "matplotlib>=3.10.8",
-    "numpy>=2.4.2",
+    "numpy<2",
     "optuna>=4.7.0",
-    "pandas>=3.0.1",
-    "scikit-learn>=1.8.0",
+    "pandas>=2.2,<3",
+    "scikit-learn>=1.5,<2",
     "seaborn>=0.13.2",
+    "streamlit>=1.45,<1.46",
     "xgboost>=3.2.0",
+    "pyarrow==14.0.2",
+    "altair>=4,<6",
 ]
+
+[dependency-groups]
+dev = []
