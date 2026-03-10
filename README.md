@@ -1,4 +1,5 @@
 # 🏦 PrediDepósito — Customer Subscription Prediction
+> Predicción inteligente de clientes con mayor probabilidad de contratar depósitos
 
 <div align="center">
 
@@ -12,15 +13,32 @@
 
 ---
 
-## El problema que resolvemos
+## Resumen del proyecto
 
-Cada campaña de marketing telefónico bancario empieza igual: una lista de clientes, un equipo de agentes y la misma pregunta sin respuesta — *¿a quién llamamos primero?*
+Los bancos suelen realizar **campañas de marketing telefónico a gran escala** para promocionar productos financieros como los **depósitos a plazo**.
+Sin embargo, contactar a los clientes de forma aleatoria conlleva:
 
-Sin una respuesta clara, la estrategia por defecto es llamar a todos. El resultado es predecible: costes operativos elevados, agentes invirtiendo tiempo en conversaciones que no van a ningún lado, y clientes recibiendo llamadas que no pidieron.
+- Altos costes operativos
+- Bajas tasas de conversión
+- Mala experiencia del cliente
 
-Este proyecto nació para cambiar esa dinámica. En lugar de tratar a todos los clientes como candidatos equivalentes, construimos un modelo de Machine Learning capaz de leer el perfil de cada persona —su historial financiero, sus interacciones anteriores con el banco, su momento de vida— y asignarle una probabilidad real de suscribirse a un depósito a plazo fijo **antes de que suene el teléfono**.
+Este proyecto crea un **modelo de clasificación de aprendizaje automático** capaz de predecir qué clientes tienen mayor probabilidad de suscribirse a un depósito a plazo.
 
-El resultado: los equipos comerciales dejan de disparar a ciegas y empiezan a trabajar con una lista priorizada de las personas que realmente tienen razón de ser contactadas.
+Al priorizar a los clientes con alta probabilidad de suscripción, los equipos de marketing pueden:
+
+- 📈 aumentar la conversión de la campaña
+- 📉 reducir los costes operativos
+- 🎯 centrarse en los clientes potenciales más prometedores
+
+------------------------------------------------------------------------
+
+## Objetivos del proyecto
+
+El objetivo de este proyecto fue desarrollar un **sistema predictivo de clientes** que:
+
+- identifique a los clientes con **alta probabilidad de suscripción**
+- respalde la toma de decisiones de marketing basadas en datos**
+- pueda implementarse en una **aplicación interactiva Streamlit**
 
 ---
 
@@ -35,6 +53,8 @@ Datos UCI  →  EDA  →  Preprocesamiento  →  SMOTE  →  Entrenamiento  → 
 El modelo final es un **XGBoost optimizado con Optuna** que alcanza un **AUC-ROC de 0.792** operando únicamente con información disponible *antes* del contacto — sin atajos, sin data leakage, listo para producción.
 
 **PrediDepósito** = es una aplicación Streamlit que permite a cualquier miembro del equipo de marketing introducir el perfil de un cliente y obtener su score de propensión en tiempo real, sin necesidad de conocimientos técnicos.
+
+![PrediDeposito_UI](assets/PrediDeposito.png)
 
 ---
 
@@ -150,10 +170,10 @@ Proyecto6_Clasificacion_Equipo2/
 ## Autores
 
 Desarrollado por:
-Andrés Torrez
-Iris Amorim
-Mirae Kang
-Maryori Cruz
+- Andrés Torrez
+- Iris Amorim
+- Mirae Kang
+- Maryori Cruz
 
 ---
 
