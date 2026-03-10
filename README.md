@@ -182,4 +182,3 @@ Desarrollado por:
 📄 [Informe Técnico](https://github.com/Bootcamp-IA-P6/Proyecto6_Clasificacion_Equipo2/blob/main/reports/model_report.md) · 📓 [Notebooks](https://github.com/Bootcamp-IA-P6/Proyecto6_Clasificacion_Equipo2/blob/main/notebook/05_modeling_xgboost.ipynb) · 🖥️ [Aplicación](https://github.com/Bootcamp-IA-P6/Proyecto6_Clasificacion_Equipo2/blob/main/app/app.py)
 
 </div>
-
