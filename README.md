@@ -111,7 +111,7 @@ streamlit run app/streamlit_app.py
 python main.py
 
 # (Opcional) Pasar los tests
-pytest test/
+uv run pytest test/
 ```
 
 ---
@@ -153,13 +153,13 @@ Desarrollado por:
 Andrés Torrez
 Iris Amorim
 Mirae Kang
-Maryori 
+Maryori Cruz
 
 ---
 
 <div align="center">
 
-📄 [Informe Técnico](reports/model_report.md) · 📓 [Notebooks](notebook/05_modeling_xgboost.ipynb) · 🖥️ [Aplicación](app/app.py)
+📄 [Informe Técnico](https://github.com/Bootcamp-IA-P6/Proyecto6_Clasificacion_Equipo2/blob/main/reports/model_report.md) · 📓 [Notebooks](https://github.com/Bootcamp-IA-P6/Proyecto6_Clasificacion_Equipo2/blob/main/notebook/05_modeling_xgboost.ipynb) · 🖥️ [Aplicación](https://github.com/Bootcamp-IA-P6/Proyecto6_Clasificacion_Equipo2/blob/main/app/app.py)
 
 </div>
 
